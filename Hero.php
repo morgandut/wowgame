@@ -1,15 +1,16 @@
 <?php
-
 // Définition de la classe Hero
 class Hero {
     public $name;
     public $level;
+    public $damage;
     public $experience;
     public $expGained;
 
-    public function __construct($name, $level = 1, $experience = 0, $expGained = 0) {
+    public function __construct($name, $level = 1, $damage = 5, $experience = 0, $expGained = 0) {
         $this->name = $name;
         $this->level = $level;
+        $this->damage = $damage;
         $this->experience = $experience;
         $this->expGained = $expGained;
     }

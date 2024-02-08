@@ -1,6 +1,6 @@
 <?php
-include 'Hero.php';
-
+include('combat.php');
+ini_set('display_errors', 'off');
 session_start();
 
 $expPercentage = ($_SESSION['hero']->experience / ($_SESSION['hero']->level * 500)) * 100;
@@ -27,6 +27,12 @@ $_SESSION['exp_percentage'] = $expPercentage;
             </div>
         </div>
     </div>
+    <div id="enemy-info">
+        <h2>Enemy</h2>
+        <p>Nom: <span id="enemy-name"><?php echo $_SESSION['enemy']->name; ?></span></p>
+        <p>Niveau: <span id="enemy-level"><?php echo $_SESSION['enemy']->enemylevel; ?></span></p></p>
+        <p>HP: <span id="enemy-HP"><?php echo $_SESSION['enemy']->current_hp; ?></span></p></p></p>
+    </div>
     <br>
     <button id="reset-btn">Réinitialiser le héros</button>
 
@@ -40,13 +46,20 @@ $(document).ready(function() {
             type: "POST",
             dataType: "json", // Spécifiez le type de données attendu
             success: function(data) {
+                var level = data.level;
+                var experience = data.experience;
+                var expGained = data.expGained;
+                var enemyLevel = data.enemyLevel;
+                var now_hp = data.now_hp;
                 // Mettre à jour les éléments HTML avec les données reçues
-                $("#hero-level").text(data.level);
-                $("#hero-exp").text(data.experience);
-                $("#hero-expgained").text(data.expGained);
+                $("#hero-level").text(level);
+                $("#hero-exp").text(experience);
+                $("#hero-expgained").text(expGained);
                 // Mettre à jour la barre de progression d'expérience
-                var expPercentage = (data.experience / (data.level * 500)) * 100;
+                var expPercentage = (experience / (level * 500)) * 100;
                 $("#exp-progress").css("width", expPercentage + "%");
+                $("#enemy-level").text(enemyLevel);
+                $("#enemy-HP").text(now_hp);
             }
         });
     }
